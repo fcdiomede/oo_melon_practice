@@ -154,5 +154,31 @@ def get_sellability_report(melons):
         print(f'Harvested by {melon.farmer_harvested} from',
             f'Field {melon.field_harvested} ({sellable})')
 
+def make_melons_from_file(filename, melon_types):
+    f = open(filename)
+
+    melons_by_id = make_melon_type_lookup(melon_types)
+    
+    melons = []
+
+    for line in f:
+        line = line.rstrip()
+        data = line.split(" ")
+
+        melon_type = data[5]
+        shape_rating = int(data[1])
+        color_rating = int(data[3])
+        field_harvested = int(data[11])
+        farmer_harvested = data[8]
+
+        melon = Melon(melons_by_id[melon_type], shape_rating, 
+                    color_rating, field_harvested, farmer_harvested)
+
+        melons.append(melon)
+
+    f.close()
+
+    return melons
+
 
 
